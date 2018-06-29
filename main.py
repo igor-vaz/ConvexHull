@@ -4,8 +4,15 @@ from OpenGL.GLUT import *
 from OpenGL.GL import *
 from OpenGL.GLU import *
 import sys
+from monotonechain import MonotoneChain
 
+drawHull = False
 Points = []
+convex_hull = []
+ESCAPE = '\x1B'
+ENTER = '\x0D'
+SPACE = '\x20'
+monotoneChain = MonotoneChain()
 
 def init2D(r,g,b):
 	glClearColor(r,g,b,0.0)  
@@ -23,14 +30,41 @@ def display():
 			glVertex2f(point[0],500 - point[1])	
 		glEnd()
 	
+	if drawHull:
+		glBegin(GL_LINES)
+		print convex_hull
+		print str(len(convex_hull))
+		'''for i in range(len(convex_hull)):
+			print i
+			if (i == len(convex_hull)-1):
+				print "AQUI NO IF"
+				glVertex2i(convex_hull[0][0],convex_hull[0][1])
+    			glVertex2i(convex_hull[i][0],convex_hull[i][1])
+    		else:
+				glVertex2i(convex_hull[i][0],convex_hull[i][1])
+				glVertex2i(convex_hull[i+1][0],convex_hull[i+1][1])
+		'''
+		glEnd()
+
 	glFlush()
 	
 	
 # The function called whenever a key is pressed. Note the use of Python tuples to pass in: (key, x, y)  
 def keyPressed(*args):
+	global drawHull, Points,convex_hull
 	# If escape is pressed, kill everything.
 	if args[0] == ESCAPE:
 		sys.exit()
+	elif args[0] == ENTER:
+		convex_hull = monotoneChain.convex_hull(tuple(Points))
+		drawHull = True
+	elif args[0] == SPACE:
+		# Clear screen
+		Points = []
+		convex_hull = []
+		drawHull = False
+		glClear(GL_COLOR_BUFFER_BIT)
+		glFlush()
 
 def Upon_Click (button, button_state, cursor_x, cursor_y):
 	""" Mouse button clicked.
@@ -39,7 +73,7 @@ def Upon_Click (button, button_state, cursor_x, cursor_y):
 	"""
 	if (button == GLUT_LEFT_BUTTON and button_state == GLUT_DOWN):	
 		# Left button clicked down
-		Points.append([cursor_x, cursor_y])
+		Points.append((cursor_x, cursor_y))
 
 def main():
 	glutInit(sys.argv)
@@ -54,6 +88,7 @@ def main():
 	# 2D view
 	init2D(0.0,0.0,0.0)
 	glutDisplayFunc(display)
+	glutIdleFunc(display)
 	glutMainLoop()
 
 if __name__ == "__main__":
