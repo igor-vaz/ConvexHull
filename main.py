@@ -14,6 +14,7 @@ ENTER = '\x0D'
 SPACE = '\x20'
 monotoneChain = MonotoneChain()
 
+# The function that do a projection to 2D
 def init2D(r,g,b):
 	glClearColor(r,g,b,0.0)  
 	glMatrixMode (GL_PROJECTION)
@@ -24,13 +25,14 @@ def display():
 	glPointSize(5)
 	glLineWidth(3)
 	glColor3f(1.0, 1.0, 1.0)
-	
+	# Draw points created by user
 	if len(Points) > 0:
 		glBegin(GL_POINTS)
 		for point in Points:
 			glVertex2f(point[0],500 - point[1])	
 		glEnd()
 	
+	# Draw lines that connect points of the convex hull
 	if drawHull:
 		glColor3f(0.0, 0.0, 1.0)
 		glBegin(GL_LINES)
@@ -46,13 +48,14 @@ def display():
 	glFlush()
 	
 	
-# The function called whenever a key is pressed. Note the use of Python tuples to pass in: (key, x, y)  
+# The function called whenever a key is pressed.
 def keyPressed(*args):
 	global drawHull, Points,convex_hull
-	# If escape is pressed, kill everything.
 	if args[0] == ESCAPE:
+		# If escape is pressed, kill everything.
 		sys.exit()
 	elif args[0] == ENTER:
+		# Calculate convex hull
 		convex_hull = monotoneChain.convex_hull(tuple(Points))
 		drawHull = True
 	elif args[0] == SPACE:
@@ -77,7 +80,7 @@ def main():
 	glutInitDisplayMode (GLUT_SINGLE | GLUT_RGB)
 	glutInitWindowSize (500, 500)
 	glutInitWindowPosition (100, 100)
-	glutCreateWindow ('points and lines')
+	glutCreateWindow ('Convex_Hull')
 	# Register the function called when the keyboard is pressed.  
 	glutKeyboardFunc(keyPressed)
 	# GLUT When mouse buttons are clicked in window
