@@ -22,6 +22,7 @@ def init2D(r,g,b):
 def display():
 	glClear(GL_COLOR_BUFFER_BIT)
 	glPointSize(5)
+	glLineWidth(3)
 	glColor3f(1.0, 1.0, 1.0)
 	
 	if len(Points) > 0:
@@ -31,19 +32,11 @@ def display():
 		glEnd()
 	
 	if drawHull:
-		glBegin(GL_LINES)
-		print convex_hull
-		print str(len(convex_hull))
-		'''for i in range(len(convex_hull)):
-			print i
-			if (i == len(convex_hull)-1):
-				print "AQUI NO IF"
-				glVertex2i(convex_hull[0][0],convex_hull[0][1])
-    			glVertex2i(convex_hull[i][0],convex_hull[i][1])
-    		else:
-				glVertex2i(convex_hull[i][0],convex_hull[i][1])
-				glVertex2i(convex_hull[i+1][0],convex_hull[i+1][1])
-		'''
+		glColor3f(0.0, 0.0, 1.0)
+		glBegin(GL_POLYGON)
+		for i in range(0,len(convex_hull),1):
+			glVertex2f(convex_hull[i][0],500-convex_hull[i][1])
+
 		glEnd()
 
 	glFlush()
