@@ -1,14 +1,7 @@
 class MonotoneChain:
 
+    #Computes the convex hull of a set of 2D points.
     def convex_hull(self,points):
-        """Computes the convex hull of a set of 2D points.
-     
-        Input: an iterable sequence of (x, y) pairs representing the points.
-        Output: a list of vertices of the convex hull in counter-clockwise order,
-          starting from the vertex with the lexicographically smallest coordinates.
-        Implements Andrew's monotone chain algorithm. O(n log n) complexity.
-        """
-     
         # Sort the points lexicographically (tuples are compared lexicographically).
         # Remove duplicates to detect the case we have just one unique point.
         points = sorted(set(points))
@@ -40,7 +33,3 @@ class MonotoneChain:
         # Concatenation of the lower and upper hulls gives the convex hull.
         # Last point of each list is omitted because it is repeated at the beginning of the other list. 
         return lower[:-1] + upper[:-1]
- 
- 
-# Example: convex hull of a 10-by-10 grid.
-#assert convex_hull([(i/10, i%10) for i in range(100)]) == [(0, 0), (9, 0), (9, 9), (0, 9)]
