@@ -33,10 +33,14 @@ def display():
 	
 	if drawHull:
 		glColor3f(0.0, 0.0, 1.0)
-		glBegin(GL_POLYGON)
+		glBegin(GL_LINES)
 		for i in range(0,len(convex_hull),1):
-			glVertex2f(convex_hull[i][0],500-convex_hull[i][1])
-
+			if i == len(convex_hull)-1:
+				glVertex2f(convex_hull[i][0],500-convex_hull[i][1])
+				glVertex2f(convex_hull[0][0],500-convex_hull[0][1])	
+			else:
+				glVertex2f(convex_hull[i][0],500-convex_hull[i][1])
+				glVertex2f(convex_hull[i+1][0],500-convex_hull[i+1][1])
 		glEnd()
 
 	glFlush()
